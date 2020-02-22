@@ -1,4 +1,4 @@
-package com.myapp.api;
+package com.myapp.api.app;
 
 
 import java.util.Locale;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGe
 
 @SpringBootApplication(
   scanBasePackages = {
-    "com.myapp.api.app.servlet",
+    "com.myapp.api.app",
     "com.myapp.api.one.servlet",
     "com.myapp.api.two.servlet"
   }

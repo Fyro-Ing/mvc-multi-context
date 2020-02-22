@@ -1,23 +1,12 @@
 package com.myapp.api.app.conf;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
 @EnableScheduling
-@ComponentScan(
-  basePackages = {
-    "com.api"
-  },
-  excludeFilters = {
-    @Filter(type = FilterType.REGEX, pattern = "com\\.api\\.app.*"),
-    @Filter(type = FilterType.REGEX, pattern = "com\\.api\\.service.*")
-  })
 public class AppConfig {
 
   /**

@@ -8,16 +8,13 @@ spring:
     version: "@version@"
   profiles:
     active: "${env:PROD}"
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration
 
   mvc:
-    app:
-      async:
-        request-timeout: 10000
-      servlet:
-        path: /api
-      static-path-pattern: /**
+    async:
+      request-timeout: 10000
+    servlet:
+      path: /api
+    static-path-pattern: /**
     one:
       async:
         request-timeout: 10000
