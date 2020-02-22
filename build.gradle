@@ -1,0 +1,124 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java-library'
+    id 'org.springframework.boot' version '2.2.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'io.freefair.lombok' version '4.1.6'
+}
+
+apply plugin: 'application'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+
+group = 'com.api'
+version = file("./version.txt").getText().trim()
+mainClassName = 'com.api.Application'
+sourceCompatibility = JavaVersion.VERSION_13
+targetCompatibility = JavaVersion.VERSION_13
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/snapshot' }
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
+    maven { url 'https://plugins.gradle.org/m2/' }
+}
+
+configurations {
+    all*.exclude group: 'org.sonatype.sisu'
+    all*.exclude group: 'javax.resource', module: 'connector'
+    all*.exclude group: 'commons-lang', module: 'commons-lang'
+    all*.exclude group: 'javax.servlet', module: 'servlet-api'
+    all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    all*.exclude group : "org.junit.vintage", module : "junit-vintage-engine"
+    all*.exclude group : "junit", module : "junit"
+}
+
+dependencies {
+    // SpringBoot.
+    implementation('org.springframework.boot:spring-boot-starter-actuator')
+
+    // spring web
+    implementation('org.springframework.boot:spring-boot-starter-web')
+
+    // aop
+    implementation('org.springframework.boot:spring-boot-starter-aop')
+
+    // logging
+    implementation('org.springframework.boot:spring-boot-starter-logging')
+
+
+    // Test.
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
+    // 5.6 bug ?
+    testImplementation('org.junit.jupiter:junit-jupiter-engine:5.5.+')
+
+    // Mokito
+    testImplementation('org.mockito:mockito-core:3.+')
+    testImplementation('org.mockito:mockito-junit-jupiter:3.+')
+
+}
+
+/**
+ * Build.
+ */
+tasks.withType(Exec) {
+    doFirst {
+        println commandLine
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.incremental = true
+    sourceCompatibility = JavaVersion.VERSION_13
+    targetCompatibility = JavaVersion.VERSION_13
+}
+
+/**
+ * Test.
+ */
+test {
+    // Junit 5 required
+    useJUnitPlatform()
+    reports {
+        junitXml.enabled = true
+        html.enabled = true
+    }
+    systemProperty 'env', "TEST"
+    testLogging {
+        // set options for log level LIFECYCLE
+        events "failed"
+        exceptionFormat "short"
+
+        // set options for log level DEBUG
+        debug {
+            events "started", "skipped", "failed"
+            exceptionFormat "full"
+        }
+
+        // remove standard output/error logging from --info builds
+        // by assigning only 'failed' and 'skipped' events
+        info.events = ["failed", "skipped"]
+    }
+}
+
+processResources {
+    with copySpec {
+        from 'src/main/resources'
+        project.properties.findAll().each { prop ->
+            filter(ReplaceTokens, tokens: [version: version])
+        }
+    }
+}
+
+bootJar {
+    enabled = true
+    manifest {
+        attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+        attributes 'Implementation-Version': version
+    }
+}

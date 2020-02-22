@@ -1,0 +1,15 @@
+pluginManagement {
+  repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/snapshot' }
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://plugins.gradle.org/m2/' }
+  }
+}
+
+if (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_13)) {
+  throw new IllegalStateException('''A Haiku:
+                                    |  This needs Java 13,
+                                    |  You are using something else,
+                                    |  Refresh. Try again.'''.stripMargin())
+}
