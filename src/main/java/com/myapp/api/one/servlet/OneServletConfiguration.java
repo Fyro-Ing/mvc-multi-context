@@ -1,15 +1,9 @@
 package com.myapp.api.one.servlet;
 
-import com.myapp.api.app.conf.WebMvcConfig;
-import com.myapp.api.app.servlet.AppServletConfiguration;
+import com.myapp.api.one.OneConfiguration;
 import javax.servlet.MultipartConfigElement;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.autoconfigure.http.HttpProperties;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
@@ -23,12 +17,6 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 
 @Configuration
-@AutoConfigureOrder(1)
-@ConditionalOnWebApplication(type = Type.SERVLET)
-@ConditionalOnClass(DispatcherServlet.class)
-@AutoConfigureAfter({
-  AppServletConfiguration.class
-})
 public class OneServletConfiguration {
 
   @Bean(name = "oneWebMvcProperties")
@@ -61,10 +49,7 @@ public class OneServletConfiguration {
     context.setBeanNameGenerator(new FullyQualifiedAnnotationBeanNameGenerator());
 
     context.register(
-      WebMvcConfig.class
-    );
-    context.scan(
-      "com.myapp.api.one"
+      OneConfiguration.class
     );
 
     oneDispatcherServlet.setApplicationContext(context);

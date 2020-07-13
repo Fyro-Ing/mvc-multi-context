@@ -1,6 +1,5 @@
 package com.myapp.api.app.servlet;
 
-import com.myapp.api.app.servlet.AppServletConfiguration.ConfigEnv;
 import javax.servlet.MultipartConfigElement;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,12 +16,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.DispatcherServlet;
 
-@Import({ConfigEnv.class})
 @Configuration
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
 @ConditionalOnWebApplication(type = Type.SERVLET)
@@ -48,6 +45,9 @@ public class AppServletConfiguration {
       .setThrowExceptionIfNoHandlerFound(appWebMvcProperties.isThrowExceptionIfNoHandlerFound());
     dispatcherServlet.setPublishEvents(appWebMvcProperties.isPublishRequestHandledEvents());
     dispatcherServlet.setEnableLoggingRequestDetails(httpProperties.isLogRequestDetails());
+
+    dispatcherServlet.setContextClass(ConfigEnv.class);
+
     return dispatcherServlet;
   }
 
@@ -66,7 +66,8 @@ public class AppServletConfiguration {
   }
 
   @ComponentScan({
-    "com.api.app.conf"
+    "com.api.app.conf",
+    "com.myapp.api.app.service"
   })
   protected static final class ConfigEnv {
 

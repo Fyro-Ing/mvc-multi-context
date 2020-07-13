@@ -1,4 +1,4 @@
-package com.myapp.api;
+package com.myapp.api.app;
 
 
 import java.util.Locale;
