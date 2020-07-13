@@ -1,6 +1,7 @@
 package com.myapp.api.two.servlet;
 
 import com.myapp.api.app.conf.properties.MvcProperties;
+import com.myapp.api.app.service.AppController;
 import com.myapp.api.two.TwoConfiguration;
 import javax.servlet.MultipartConfigElement;
 import org.springframework.beans.factory.ObjectProvider;
@@ -46,7 +47,8 @@ public class TwoServletConfiguration {
     context.setBeanNameGenerator(new FullyQualifiedAnnotationBeanNameGenerator());
 
     context.register(
-      TwoConfiguration.class
+      TwoConfiguration.class,
+      AppController.class
     );
 
     twoDispatcherServlet.setApplicationContext(context);

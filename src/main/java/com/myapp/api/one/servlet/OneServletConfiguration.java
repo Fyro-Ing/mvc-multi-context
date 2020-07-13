@@ -1,6 +1,7 @@
 package com.myapp.api.one.servlet;
 
 import com.myapp.api.app.conf.properties.MvcProperties;
+import com.myapp.api.app.service.AppController;
 import com.myapp.api.one.OneConfiguration;
 import javax.servlet.MultipartConfigElement;
 import org.springframework.beans.factory.ObjectProvider;
@@ -46,7 +47,8 @@ public class OneServletConfiguration {
     context.setBeanNameGenerator(new FullyQualifiedAnnotationBeanNameGenerator());
 
     context.register(
-      OneConfiguration.class
+      OneConfiguration.class,
+      AppController.class
     );
 
     oneDispatcherServlet.setApplicationContext(context);

@@ -19,4 +19,14 @@ public class AppController {
     return ResponseEntity.noContent().build();
   }
 
+  @PostMapping("/sub")
+  public ResponseEntity<Void> postSub(final HttpServletRequest request) {
+    return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/sub")
+  public ResponseEntity<Void> getSub(final HttpServletRequest request) {
+    return ResponseEntity.noContent().build();
+  }
+
 }
