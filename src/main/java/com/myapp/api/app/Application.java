@@ -8,6 +8,7 @@ import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGe
 
 
 @SpringBootApplication(
+  nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class,
   scanBasePackages = {
     "com.myapp.api.app",
     "com.myapp.api.one.servlet",

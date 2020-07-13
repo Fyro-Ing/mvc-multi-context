@@ -1,5 +1,6 @@
 package com.myapp.api.one.servlet;
 
+import com.myapp.api.app.conf.WebMvcConfig;
 import com.myapp.api.app.conf.properties.MvcProperties;
 import com.myapp.api.app.service.AppController;
 import com.myapp.api.one.OneConfiguration;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator;
@@ -38,15 +38,14 @@ public class OneServletConfiguration {
 
   @Bean(name = "oneServlet")
   public ServletRegistrationBean<DispatcherServlet> oneServlet(
-    final ApplicationContext applicationContext,
     @Qualifier("oneWebMvcProperties") final MvcProperties oneWebMvcProperties,
     final ObjectProvider<MultipartConfigElement> multipartConfig) {
     final DispatcherServlet oneDispatcherServlet = oneDispatcherServlet(oneWebMvcProperties);
     final AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-    context.setParent(applicationContext);
     context.setBeanNameGenerator(new FullyQualifiedAnnotationBeanNameGenerator());
 
     context.register(
+      WebMvcConfig.class,
       OneConfiguration.class,
       AppController.class
     );
